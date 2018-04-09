@@ -1,0 +1,73 @@
+<template include="./plugin/haya_pt/view/htm/template/haya_pt_user.template.htm">
+	
+	<slot name="my_body">
+		
+		<?php include _include(haya_pt_plugin_view('htm/user/shop_tab.htm')); ?>
+		
+		<div class="haya-pt-shop">
+	
+			<form action="<?php echo url('pt-shop');?>" method="post">
+				
+				<div class="form-group row mb-3">
+					<label class="col-md-2 pr-0 form-control-label text-md-right">
+						我的流量：
+					</label>
+					<div class="col-md-8">
+						<?php echo haya_pt_sizecount($haya_pt_user['flux']); ?>
+					</div>
+				</div>
+				
+				<div class="form-group row mb-3">
+					<label class="col-md-2 pr-0 form-control-label text-md-right">
+						规格：
+					</label>
+					<div class="col-md-8">
+						1G 流量需花费 <span class="text-info font-weight-bold"><?php echo $haya_pt_config['exchange_flux_money']; ?></span> 积分
+					</div>
+				</div>
+				
+				<div class="form-group row mb-3">
+					<label class="col-md-2 pr-0 form-control-label text-md-right" for="num">
+						兑换流量：
+					</label>
+					<div class="col-md-8">
+						<input type="text" name="num" id="num" value="1" class="form-control">
+						<div class="figure-caption mt-1">
+							单位：G。我的当前剩余积分 <span class="text-info"><?php echo $user['credits']; ?></span> 枚，积分不够将不能进行兑换。
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group row mb-3">
+					<label class="col-md-2 form-control-label"></label>
+					<div class="col-md-2">
+						<button type="submit" class="btn btn-primary btn-block mr-2 mb-2" id="submit">兑换</button>
+					</div>
+					<div class="col-md-2">
+						<a role="button" class="btn btn-secondary btn-block mb-2" href="javascript:history.back();"><?php echo lang('back'); ?></a>
+					</div>
+				</div>
+				
+				<?php if ($haya_pt_check_user_exchange_flux_group === false) { ?>
+					<div class="form-group row haya-pt-shop-error">
+						<div class="col-12">
+							<div class="alert alert-danger alert-custom alert-dismissible mb-0">
+								<i class="icon icon-times-circle mr-2"></i>
+								<span class="haya-pt-shop-error-warning font-weight-bold">注意！</span>
+								<span class="haya-pt-shop-error-tip">你所属的用户组当前不能够兑换流量，请多多发言升级你的用户组！</span>
+							</div>
+						</div>
+					</div>
+				<?php } ?>
+				
+			</form>
+			
+		</div>
+		
+	</slot>
+	
+</template>
+
+<script>
+$('a[data-active="pt-shop"]').addClass('active');
+</script>

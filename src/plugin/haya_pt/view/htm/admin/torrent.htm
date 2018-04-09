@@ -1,0 +1,103 @@
+<?php include _include(APP_PATH.'view/htm/header.inc.htm');?>
+
+<div class="card">
+	<div class="card-header">种子详情</div>
+	<div class="card-body ajax-body">
+		<form action="" method="post" id="haya_pt_form">
+			<div class="form-group row">
+				<div class="col-12">
+					<span class="text-info">日期：</span>
+					<?php echo $torrent_date; ?>
+				</div>
+			</div>
+			
+			<?php if (!empty($info["name"])) { ?>
+				<div class="form-group row">
+					<div class="col-12">
+						<span class="text-info">目录：</span>
+						<?php echo $info["name"]; ?>
+					</div>
+				</div>
+			<?php } ?>
+			
+			<div class="form-group row">
+				<div class="col-12">
+					<span class="text-info">大小：</span>
+					<?php echo $torrent_allsize; ?>
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<div class="col-12">
+					<span class="text-info">地址：</span>
+					<?php echo $torrent_announce; ?>
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<div class="col-12">
+					<span class="text-info">版本：</span>
+					<?php echo $torrent_created_by; ?>
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<div class="col-12">
+					<span class="text-info">编码：</span>
+					<?php echo $torrent_encoding; ?>
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<div class="col-12">
+					<span class="text-info">状态：</span>
+					<?php 
+					if ($torrent_private == 1) {
+						echo '私有';
+					} else {
+						echo '公开';
+					}
+					?>
+				</div>
+			</div>
+			
+			<?php if (!empty($torrent_comment)) { ?>
+				<div class="form-group row">
+					<div class="col-12">
+						<span class="text-info">描述：</span>
+						<?php echo $torrent_comment; ?>
+					</div>
+				</div>
+			<?php } ?>
+			
+			<div class="form-group row">
+				<div class="col-12">
+					<span class="text-info">内容：</span>
+				</div>
+				<div class="col-12 py-2">
+					<div class="table-responsive" style="max-height:150px; overflow-y:auto;">
+						<table class="table mb-0">
+							<thead>
+								<tr>
+									<th>文件名</th>
+									<th>大小</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php echo $torrent_files; ?>
+							</tbody>
+						</table>
+					</div>	
+				</div>				
+			</div>
+
+			<div class="form-group row">
+				<div class="col-12">
+					<button type="button" class="btn btn-block btn-primary" data-dismiss="modal" aria-label="Close">关闭</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
+<?php include _include(APP_PATH.'view/htm/footer.inc.htm');?>

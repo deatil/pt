@@ -1,0 +1,52 @@
+<template include="./plugin/haya_pt/view/htm/template/haya_pt_user.template.htm">
+
+	<slot name="my_body">
+		<div class="row line-height-4">
+			<div class="col-md-6">
+				<div class="haya-pt-info-item">
+					<span class="text-dark"><b>我的流量：</b></span>
+					<?php echo haya_pt_sizecount($user_torrent['flux']);?>
+				</div>
+			</div>
+			
+			<div class="col-md-6">
+				<div class="haya-pt-info-item">
+					<span class="text-dark">分&nbsp;&nbsp;享&nbsp;&nbsp;率：</span>
+					<?php 
+						if ($user_torrent['downloaded'] > 0) {
+							echo round($user_torrent['uploaded']/$user_torrent['downloaded'], 2);
+						} elseif ($user_torrent['uploaded'] > 0) {
+							echo '1.00';
+						} else {
+							echo '0';
+						}
+					?> 
+				</div>
+			</div>
+		</div>
+			
+		<div class="row line-height-4">	
+			<div class="col-md-6">
+				
+				<div class="haya-pt-info-item">
+					<span class="text-dark">我的上传：</span>
+					<?php echo haya_pt_sizecount($user_torrent['uploaded']);?>
+				</div>
+			</div>
+		
+			<div class="col-md-6">
+				
+				<div class="haya-pt-info-item">
+					<span class="text-dark">我的下载：</span>
+					<?php echo haya_pt_sizecount($user_torrent['downloaded']);?> 
+				</div>
+				
+			</div>
+		</div>
+	</slot>
+	
+</template>
+
+<script>
+$('a[data-active="pt-info"]').addClass('active');
+</script>

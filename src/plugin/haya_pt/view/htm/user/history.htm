@@ -1,0 +1,87 @@
+<template include="./plugin/haya_pt/view/htm/template/haya_pt_user.template.htm">
+	
+	<slot name="my_body">
+		<div class="haya-pt-history">
+			<div class="p-0 pt-1 pb-1">
+				<div class="text-muted mb-0">
+					<div class="d-flex justify-content-between">
+						<div>
+							共有记录 <?php echo $total;?> 条，每页 <?php echo $pagesize; ?> 条。
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="table-responsive p-0 pt-1 pb-1">
+				<table class="table table-striped table-hover">
+					<thead>
+						<tr style="background-color:#E8F0F7;">
+							<th>资源名称</th>
+							<th>最近活动</th>
+							<th>上传 / 真实上传</th>
+							<th>下载 / 真实下载</th>
+							<th>创建时间</th>
+							<th width="80">状态</th>
+						</tr>
+					</thead>
+				
+					<tbody>						
+						<?php if (!empty($historys)) { ?>
+							<?php foreach ($historys as $history) { ?>
+								<tr class="<?php echo $history['color']; ?>">
+									<td>
+										<?php if (!empty($history['subject'])) { ?>
+											<a href="<?php echo url('thread-'.$history['tid']); ?>" title="<?php echo $history['subject']; ?>" target="_blank"><?php echo haya_pt_substr($history['subject'], 15); ?></a>
+										<?php } else { ?>
+											<span class="text-danger">资源已删除</span>
+										<?php } ?>
+									</td>
+
+									<td><?php echo $history['date']; ?></td>
+									<td><?php echo $history['uploaded']; ?> / <?php echo $history['realup']; ?></td>
+									<td><?php echo $history['downloaded']; ?> / <?php echo $history['realdown']; ?></td>
+									<td><?php echo $history['makedate']; ?></td>
+									<td>
+										<?php if (isset($haya_pt_peer_infohash_list[$history['infohash']])) { ?>
+											<?php if ($haya_pt_peer_infohash_list[$history['infohash']]['status'] == 'seeder') { ?>
+												<span class="text-success">
+													做种中
+												</span>
+											<?php } else { ?>
+												<span class="text-info">
+													下载中
+												</span>
+											<?php } ?>
+										<?php } else { ?>
+											<span class="text-danger">
+												离线
+											</span>
+										<?php } ?>
+									</td>
+								</tr>
+							<?php } ?>
+						<?php } else { ?>
+							<tr>
+								<td colspan="6">
+									<div class="text-center text-grey py-3">
+										还没有历史记录
+									</div>
+								</td>
+							</tr>							
+						<?php } ?>
+					</tbody>
+				</table>
+			</div>
+			
+			<?php if (!empty($pagination)) { ?>
+				<nav><ul class="pagination justify-content-center"><?php echo $pagination; ?></ul></nav>
+			<?php } ?>
+		</div>
+		
+	</slot>
+	
+</template>
+
+<script>
+$('a[data-active="pt-history"]').addClass('active');
+</script>

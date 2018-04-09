@@ -1,0 +1,18 @@
+<style>
+.text-small {
+    font-size: 12px
+}
+
+.btn-small {
+    padding: 0 0.1rem;
+    font-size: 0.75rem
+}
+</style>
+<div class="haya-pt-shop-tab">
+	<a class="btn btn-sm <?php echo $action == 'shop' ? 'btn-primary active' : 'btn-light'; ?>" href="<?php echo url('pt-shop');?>">兑换流量</a>
+	<a class="btn btn-sm <?php echo $action == 'gift' ? 'btn-primary active' : 'btn-light'; ?>" href="<?php echo url('pt-gift');?>">赠送流量</a>
+	<a class="btn btn-sm <?php echo $action == 'log' ? 'btn-primary active' : 'btn-light'; ?>" href="<?php echo url('pt-log');?>">记录</a>
+</div>
+
+<hr class="my-4" />
+

@@ -1,0 +1,63 @@
+<?php
+
+$haya_pt_open_upload_forum = haya_pt_check_upload_forum($fid);
+$haya_pt_open_user_upload_group = haya_pt_check_user_upload_group($gid);
+
+if ($haya_pt_open_upload_forum && $haya_pt_open_user_upload_group) {
+?>
+
+	<?php if($route == 'thread' && $action == 'create') { ?>
+
+		<?php $haya_pt_tracker_url = haya_pt_get_user_tracker($uid); ?>
+
+		<style>
+		.haya-pt-bd4 {border:dashed 4px #ccc;}
+		.haya-pt-torrent:hover {font-weight: 800;}
+		</style>
+		<div class="p-2 mb-3 haya-pt-bd4">
+			<div class="mb-1 haya-pt-my-tracker">
+				您的tracker地址为：<span class="text-danger"><?php echo $haya_pt_tracker_url; ?></span>
+			</div>
+			
+			<div class="mb-0">
+				不会做种？<a href="<?php echo $haya_pt_config['help_url']; ?>" target="_blank" class="text-success">这里有教程</a>
+				&nbsp;种子文件:&nbsp;
+				
+				<a class="small text-left" href="javascript:void(0)">
+					<label class="mb-0 line-height-1 haya-pt-torrent">
+						<i class="icon-folder-open-o"></i> 
+						选择种子
+						<input type="file" multiple="multiple" class="invisible" id="haya_pt_torrent_input" />
+					</label>
+				</a>
+				<input type="hidden" name="torrent" style="display:none;" class="invisible haya-pt-torrent-hash" />
+				<span class="haya-pt-torrent-file d-none" ></span>
+			</div>
+		</div>
+	<?php } elseif ($route == 'post' && $action == 'update') { ?>
+		
+		<?php if ($isfirst) { ?>
+		
+			<?php 
+			$haya_pt_torrent = haya_pt_files_read_by_tid($thread['tid']);
+			if (!empty($haya_pt_torrent)) {
+			?>
+				<style>
+				.haya-pt-bd4 {border:dashed 4px #ccc;}
+				</style>
+				<div class="p-2 mb-3 haya-pt-bd4">
+					<div class="mb-1 haya-pt-my-tracker">
+						您的资源：<span class="text-info" title="<?php echo $haya_pt_torrent['filename']; ?>"><?php echo haya_pt_substr($haya_pt_torrent['filename'], 40); ?></span>
+					</div>
+					
+					<div class="mb-0">
+						提醒注意：<span class="text-danger">你只能修改帖子描述！如果你上传了不合适的资源请联系版主删除</span>
+					</div>
+				</div>
+			<?php } ?>
+			
+		<?php } ?>
+
+	<?php } ?>
+	
+<?php } ?>

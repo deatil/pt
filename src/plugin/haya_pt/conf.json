@@ -1,0 +1,15 @@
+{
+    "name": "PT",
+    "brief": "私有资源分享平台插件，基于xiuno系统。目前完善了PT所需的核心功能和相关扩展功能。",
+    "version": "1.0.2",
+    "author": "deatil",
+    "id": "haya_pt",
+    "bbs_version": "4.0.3",
+    "installed": 0,
+    "enable": 0,
+    "hooks_rank": {
+        "post_subject_after.htm": 150000
+    },
+    "overwrites_rank": [],
+    "dependencies": []
+}

@@ -1,0 +1,6 @@
+<?php 
+if (isset($haya_pt_files_htm[$_thread['tid']]) && !empty($haya_pt_files_htm[$_thread['tid']])) { 
+	$haya_pt_download_type = $down_weight[$haya_pt_files_htm[$_thread['tid']]['download_type']];
+	echo "<img title='下载权值（×".$haya_pt_download_type."）' src='".haya_pt_plugin_view_url('img/down'.$haya_pt_download_type.'.gif')."' class='avatar-1' />";
+} 
+?>

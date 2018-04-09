@@ -1,0 +1,58 @@
+<?php
+
+$haya_pt_open_upload_forum = haya_pt_check_upload_forum($fid);
+$haya_pt_open_user_upload_group = haya_pt_check_user_upload_group($gid);
+
+if ($haya_pt_open_upload_forum && $haya_pt_open_user_upload_group) {
+?>
+
+<script>
+$(document).on('change', '#haya_pt_torrent_input', function(e) {
+	var files = xn.get_files_from_event(e);
+	if (!files) return;
+	
+	$.each_sync(files, function(i, callback) {
+		var file = files[i];
+		xn.upload_file(file, xn.url('pt-upload'), {
+			is_image: 0,
+			fid: '<?php echo $fid; ?>'
+		}, function(code, message) {
+			if (code != 0) {
+				$(".haya-pt-torrent-hash").val('');
+				
+				return $.alert(message);
+			}
+			
+			var hash = message.hash;
+			var name = message.name;
+			
+			$(".haya-pt-torrent-hash").val(hash);
+			$('.haya-pt-torrent-file').html('<span data-hash="' + hash + '">'+name+' <a href="javascript:void(0);" class="delete ml-2"><i class="icon-remove"></i> 删除</a></span>');
+			
+			$('.haya-pt-torrent-file').removeClass("d-none");
+			$(".haya-pt-torrent").parent().addClass("d-none");
+			
+			callback();
+		}, function(percent) {
+			
+		});
+	});
+});
+
+// 删除附件
+$(".haya-pt-torrent-file").on('click', 'a.delete', function() {	
+	$(".haya-pt-torrent").parent().removeClass("d-none");
+	$(".haya-pt-torrent-hash").val('');
+	
+	$(this).addClass("d-none");
+	$(this).parent().remove();
+	
+	$('#haya_pt_torrent_input').val('');
+	
+	return false;
+})
+
+</script>
+
+<?php } ?>
+

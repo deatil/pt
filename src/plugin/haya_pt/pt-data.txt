@@ -1,0 +1,32 @@
+/pt-announce.htm
+&pid=a72290c312c6f16071c368c1a037b832
+&info_hash=%e0%f1%03~%c2%3e%bf%3d%ed%df%97%cb%5b%3a%c7%9d%92%91%96%9a
+&peer_id=-UT221B-%ff%5b%d8O%92%17U~%9dx%dct
+&port=13378
+&uploaded=0
+&downloaded=0
+&left=0
+&corrupt=0
+&key=7D87CD3B
+&event=started
+&numwant=200
+&compact=1
+&no_peer_id=1	
+
+----------------------------------------
+
+$torrent = array (
+	[announce] => ''     
+	[comment] => 种子测试     
+	[created by] => uTorrent/221B     
+	[creation date] => 1523160409     
+	[encoding] => UTF-8     
+	[info] => Array (             
+		[length] => 240323             
+		[name] => 123.zip             
+		[piece length] => 65536             
+		[pieces] => ''
+		[private] => 1         
+	)  
+) 
+

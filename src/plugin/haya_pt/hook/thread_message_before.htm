@@ -1,0 +1,79 @@
+<?php
+
+$haya_pt_torrent = haya_pt_files_read_by_tid($thread['tid']);
+
+if (!empty($haya_pt_torrent)) {
+	$haya_pt_torrent['filename'] = htmlspecialchars_decode($haya_pt_torrent['filename']);
+	$haya_pt_filename = haya_pt_substr($haya_pt_torrent['filename'], 40);
+	$haya_pt_lastactive = haya_pt_humandate($haya_pt_torrent['lastactive']);
+	$haya_pt_size = haya_pt_sizecount($haya_pt_torrent['size']);
+	$haya_pt_filesize = haya_pt_sizecount($haya_pt_torrent['filesize']);
+
+	$haya_pt_config_file = haya_pt_plugin_dir().'config/config.php';
+	include($haya_pt_config_file);
+
+	if (!isset($haya_pt_torrent['type']) 
+		|| !in_array($haya_pt_torrent['type'], array(1, 2, 3, 4, 5))
+	) {
+		$haya_pt_type = 5;
+	} else {
+		$haya_pt_type = $haya_pt_torrent['type'];
+	}
+	$haya_pt_torrent_type = 'type'.$haya_pt_type;
+
+	$haya_pt_up_image = "up".$upload_weight[$haya_pt_torrent_type].".gif";
+	$haya_pt_down_image = "down".$down_weight[$haya_pt_torrent_type].".gif";
+
+	if ($uid) {
+	?>
+		<div style="border:dashed 4px #ccc;" class="mb-3 py-2 px-3">
+			<div style="font-family: 微软雅黑;">
+				种子: <span style="color: red;"><?php echo $haya_pt_torrent['seeds']; ?></span>
+				下载中: <span style="color: red;"><?php echo $haya_pt_torrent['leechers']; ?></span>
+				完成: <span style="color: red;"><?php echo $haya_pt_torrent['finished']; ?></span>
+				大小: <span style="color: red;"><?php echo $haya_pt_size; ?></span>
+				最近活动时间: <span style="color: red;"><?php echo $haya_pt_lastactive; ?></span>
+				<img title="下载权值（×<?php echo $down_weight[$haya_pt_torrent_type]; ?>）" src="<?php echo haya_pt_plugin_view_url('img/'.$haya_pt_down_image); ?>" class="avatar-2" alt="下载权值" align="absmiddle"></span>
+				<img title="上传权值（×<?php echo $upload_weight[$haya_pt_torrent_type]; ?>）" src="<?php echo haya_pt_plugin_view_url('img/'.$haya_pt_up_image); ?>" class="avatar-2" alt="上传权值" align="absmiddle">
+			</div>
+
+			<div>
+				<a href="http://www.utorrent.com/" target="_blank"><img class="avatar-1" title="请使用utorrent打开种子文件" src="<?php echo haya_pt_plugin_view_url('img/torrent.gif'); ?>" align="absmiddle"></a>
+				<a style="font-weight: bold;color:#09C" title="<?php echo $haya_pt_torrent['filename']; ?>" href="<?php echo url('pt-download-'.$thread['tid']); ?>">
+					<?php echo $haya_pt_filename; ?>
+				</a>(<?php echo $haya_pt_filesize; ?>)(<a 
+					href="javascript:;" 
+					style="color:#09C"
+					data-modal-url="<?php echo url('pt-torr_info', array('tid' => $thread['tid'])); ?>"
+					data-modal-title="种子详情"
+					data-modal-arg="<?php echo $thread['tid']; ?>"
+				>查看种子详情</a>) 
+				&nbsp;
+				<a href="javascript:;" 
+					class="text-muted" 
+					title="如果没有种子，可以联系他们哦！"
+					data-modal-url="<?php echo url('pt-downloaded_users', array('tid' => $thread['tid'])); ?>"
+					data-modal-title="下载历史"
+					data-modal-arg="<?php echo $thread['tid']; ?>"
+				>[哪些人下载过]</a>
+			</div>
+		</div>
+	<?php } else { ?>
+		<div style="border:dashed 4px #ccc;" class="mb-3 py-2 px-3">
+			<div style="font-family: 微软雅黑;">
+				种子: <span style="color: red;"><?php echo $haya_pt_torrent['seeds']; ?></span>
+				下载中: <span style="color: red;"><?php echo $haya_pt_torrent['leechers']; ?></span>
+				完成: <span style="color: red;"><?php echo $haya_pt_torrent['finished']; ?></span>
+				大小: <span style="color: red;"><?php echo $haya_pt_size; ?></span>
+				最近活动时间: <span style="color: red;"><?php echo $haya_pt_lastactive; ?></span>
+				<img title="下载权值（×<?php echo $down_weight[$haya_pt_torrent_type]; ?>）" src="<?php echo haya_pt_plugin_view_url('img/'.$haya_pt_down_image); ?>" alt="下载权值" class="avatar-2" align="absmiddle"></span>
+				<img title="上传权值（×<?php echo $upload_weight[$haya_pt_torrent_type]; ?>）" src="<?php echo haya_pt_plugin_view_url('img/'.$haya_pt_up_image); ?>" alt="上传权值" class="avatar-2" align="absmiddle">
+			</div>
+
+			<div>
+				您还没有登录，登陆后才可以下载哦！<a href="<?php echo url('user-login'); ?>" class="xi2">登录</a>&nbsp;|
+				<a href="<?php echo url('user-create'); ?>" class="xi2">立即注册</a>
+			</div>
+		</div>
+	<?php } ?>
+<?php } ?>

@@ -1,0 +1,113 @@
+<?php include _include(ADMIN_PATH.'view/htm/header.inc.htm'); ?>
+
+<?php include _include($haya_pt_admin_view.'tab.htm'); ?>
+
+<div class="card">
+	<div class="card-header">
+		<span>
+			<a href="<?php echo url('pt-file-'.$tid); ?>" class="haya-pt-file-title text-info" title="<?php echo $haya_pt_thread['subject']; ?>">
+				<?php echo haya_pt_substr($haya_pt_thread['subject'], 20); ?>
+			</a>
+			的下载历史
+		</span>
+		
+		<span class="pull-right haya-pt-history-return">
+			<a href="<?php echo url('pt-file-'.$tid); ?>" class="btn btn-info btn-sm px-3">
+				返回
+			</a>
+		</span>
+	</div>
+	<div class="card-body">
+		<form action="" method="post" id="haya_pt_form">
+			
+			<div class="form-group row">
+				<div class="col-12">
+					<div class="py-2">
+						<?php if (!empty($historys)) { ?>
+							<div class="table-responsive">
+								<table class="table table-striped table-hover mb-0" width="width:1000px;">
+									<thead>
+										<tr>
+											<th>用户</th>
+											<th>最近活动</th>
+											<th>上传 / 真实上传</th>
+											<th>下载 / 真实下载</th>
+											<th>下载时间 / 做种时间</th>
+											<th>创建时间</th>
+											<th>状态</th>
+										</tr>
+									</thead>
+									
+									<tbody id="haya_pt_file_list" class="haya-pt-file-list">
+										<?php foreach($historys as & $_history){ ?>
+											<tr>
+												<td>
+													<a href='<?php echo url('user-'.$_history['uid']); ?>' target='_blank' class='mr-2' title='<?php echo $_history['user']['username']; ?>'>
+														<img class='avatar-2' src='../<?php echo $_history['user']['avatar_url']; ?>' alt='<?php echo $_history['user']['username']; ?>'>
+														<?php echo $_history['user']['username']; ?>
+													</a>
+												</td>
+												<td>
+													<?php echo haya_pt_humandate($_history['date']); ?>
+												</td>
+												<td>
+													<?php echo haya_pt_sizecount($_history['uploaded']); ?>
+													/ 
+													<?php echo haya_pt_sizecount($_history['realup']); ?>
+												</td>
+												<td>
+													<?php echo haya_pt_sizecount($_history['downloaded']); ?>
+													/ 
+													<?php echo haya_pt_sizecount($_history['realdown']); ?>
+												</td>
+												<td>
+													<?php echo haya_pt_format_date($_history['leechtime']); ?>
+													/ 
+													<?php echo haya_pt_format_date($_history['seedtime']); ?>
+												</td>
+												<td width="180">
+													<?php echo date('Y-m-d H:i:s', $_history['makedate']); ?>
+												</td>
+												<td>
+													<?php if (isset($_history['finished']) && $_history['finished'] == 'yes') { ?>
+														<span class="text-success">完成</span>
+														<span class="text-muted">
+															(<?php echo haya_pt_humandate($_history['completedat']); ?>)
+														</span>
+													<?php } else { ?>
+														<span class="text-danger">未完成</span>
+													<?php } ?>
+												</td>
+											</tr>
+										
+										<?php } ?>
+									</tbody>
+								</table>
+							</div>
+							
+							<?php if (!empty($pagination)) { ?>
+								<nav class="mt-3">
+									<ul class="pagination justify-content-center js-haya-pt-history-pagination mb-0">
+										<?php echo $pagination; ?>
+									</ul>
+								</nav>
+							<?php } ?>
+						<?php } else { ?>
+							<div class="text-center text-grey py-3">
+								没有发现下载记录
+							</div>
+						<?php } ?>
+					</div>				
+				</div>				
+			</div>
+			
+		</form>
+	</div>
+</div>
+
+<?php include _include(ADMIN_PATH.'view/htm/footer.inc.htm'); ?>
+
+<script>
+$('#nav li.nav-item-pt').addClass('active');
+</script>
+

@@ -1,0 +1,169 @@
+<?php include _include(ADMIN_PATH.'view/htm/header.inc.htm'); ?>
+
+<?php include _include($haya_pt_admin_view.'tab.htm'); ?>
+
+<div class="row mt-3">
+	<div class="col-md-2 mb-2">
+		<select id="srchtype" value="<?php echo $srchtype; ?>" class="custom-select">
+			<option value="">搜索类型</option>
+			<option value="fid">种子FID：</option>
+			<option value="info_hash">种子HASH值：</option>
+			<option value="tid">主题ID：</option>
+			<option value="filename">文件名称：</option>
+			<option value="type">下载权值：</option>
+		</select>
+	</div>
+	
+	<div class="col-md-3 mb-2">
+		<input type="text" id="keyword" 
+			placeholder="关键字" 
+			value="<?php echo $keyword; ?>"  
+			class="form-control" 
+			data-toggle="tooltip" 
+			data-placement="top" 
+			data-original-title="请输入搜索关键字"	
+		/>
+	</div>
+	<div class="col-md-2 m-b-sm">
+		<button id="search" class="form-control btn btn-primary">搜索</button>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-lg-12">
+		<div class="card">
+			<div class="table-responsive">
+				<table class="table table-striped table-hover mb-0" style="min-width: 800px">
+					<thead>
+						<tr>
+							<th class="text-center" width="60"><?php echo lang('delete');?></th>
+							<th width="60">FID</th>
+							<th>名称</th>
+							<th>主题</th>
+							<th>大小</th>
+							<th>添加时间</th>
+							<th width="70">操作</th>
+						</tr>
+					</thead>
+					
+					<tbody id="haya_pt_file_list" class="haya-pt-file-list">
+						<?php if (!empty($haya_pt_files)) { ?>
+							<?php foreach($haya_pt_files as & $_haya_pt_file){ ?>
+								<tr data-tid="<?php echo $_haya_pt_file['tid']; ?>" class="haya-pt-file-<?php echo $_haya_pt_file['tid']; ?>">
+									<td class="text-center"><input type="checkbox" name="delete" /></td>
+									<td><?php echo $_haya_pt_file['fid']; ?></td>
+									<td>
+										<a href="<?php echo url('pt-file-'.$_haya_pt_file['tid']); ?>" title="<?php echo htmlspecialchars_decode($_haya_pt_file['filename']); ?>">
+											<?php echo haya_pt_substr(htmlspecialchars_decode($_haya_pt_file['filename']), 40); ?>
+										</a>
+									</td>
+									<td>
+										<?php if (!empty($_haya_pt_file['thread'])) { ?>
+											<a href="<?php echo url('../thread-'.$_haya_pt_file['tid']); ?>" title="<?php echo $_haya_pt_file['thread']['subject']; ?>" target="_blank">
+												<?php echo haya_pt_substr($_haya_pt_file['thread']['subject'], 15); ?>
+											</a>
+										<?php } else { ?>
+											<span class="text-danger">资源已删除</span>
+										<?php } ?>
+									</td>
+									<td>
+										<span class="text-info">
+											<?php echo haya_pt_sizecount($_haya_pt_file['size']); ?>
+										</span>
+									</td>
+									<td width="180">
+										<?php echo date('Y-m-d H:i:s', $_haya_pt_file['date']); ?>
+									</td>
+									<td>
+										<a class="mr-2 text-success" href="<?php echo url("pt-file-".$_haya_pt_file['tid']); ?>">查看</a>
+									</td>
+								</tr>
+							<?php } ?>
+						<?php } else { ?>
+							<tr>
+								<td colspan="7">
+									<div class="text-center text-grey py-3">
+										还没有记录
+									</div>
+								</td>
+							</tr>							
+						<?php } ?>
+						
+					</tbody>
+					
+					<tfoot>
+						<tr>
+							<td class="text-center">
+								<input type="checkbox" data-target="input[name='delete']" class="checkall mt-2" value="" aria-label="全选">				
+							</td>
+							<td colspan="6">
+								<button class="btn btn-sm js-haya-pt-file-delete" id="confirm">删除</button>
+							
+								<span class="ml-3 text-muted">
+									共有 <?php echo intval($total); ?> 条记录，每页 <?php echo $pagesize; ?> 条。 
+								</span>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+		
+		<?php if (!empty($pagination)) { ?>
+			<nav class="text-center">
+				<ul class="pagination justify-content-center flex-wrap"><?php echo $pagination; ?></ul>
+			</nav>
+		<?php } ?>
+	</div>
+</div>
+
+<?php
+include _include(ADMIN_PATH.'view/htm/footer.inc.htm');
+?>
+
+<script>
+$('#nav li.nav-item-pt').addClass('active');
+
+var jsearch = $("#search");
+var jsrchtype = $("#srchtype");
+var jkeyword = $('#keyword');
+
+jsrchtype.val(jsrchtype.attr('value'));
+
+jsearch.on('click', function() {
+	var srchtype = jsrchtype.val();
+	srchtype = srchtype ? srchtype : 'fid';
+	var keyword = $("#keyword").val();
+	var url = xn.url('pt-files-'+srchtype+'-'+xn.urlencode(keyword)+'-1');
+	window.location = url;
+});
+jkeyword.on('keydown', function(e) {
+	if (e.keyCode == 13) {
+		jsearch.trigger('click')
+	};
+});
+
+// 删除选中的文件
+$(".js-haya-pt-file-delete").on('click', function(){
+	var jchecked = $("#haya_pt_file_list").find('input[name="delete"]').filter(function(){ return this.checked; });
+	if (jchecked.length < 1) {
+		return $.alert("请选择要删除的文件");
+	}
+	
+	$.confirm("确认要删除所选中文件吗？", function() {
+		jchecked.each(function() {
+			jtr = $(this).parents('tr');
+			var tid = jtr.attr('data-tid');
+			$.xpost(xn.url('pt-file_delete'), {tid: tid}, function(code, message) {
+				if (code != 0) {
+					return $.alert(message);
+				} else {
+					$(".haya-pt-file-"+tid).remove();
+				}			
+			});
+		});
+	});
+	
+	return false;
+});
+</script>

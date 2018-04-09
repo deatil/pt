@@ -1,0 +1,65 @@
+<template include="./plugin/haya_pt/view/htm/template/haya_pt_user.template.htm">
+	
+	<slot name="my_body">
+		
+		<?php include _include(haya_pt_plugin_view('htm/user/shop_tab.htm')); ?>
+		
+		<div class="haya-pt-gift">
+	
+			<form action="<?php echo url('pt-gift');?>" method="post">
+				
+				<div class="form-group row mb-3">
+					<label class="col-md-2 pr-0 form-control-label text-md-right">
+						我的流量：
+					</label>
+					<div class="col-md-8">
+						<span class="text-info font-weight-bold">
+							<?php echo haya_pt_sizecount($haya_pt_user['flux']); ?>
+						</span>
+					</div>
+				</div>
+				
+				<div class="form-group row mb-3">
+					<label class="col-md-2 pr-0 form-control-label text-md-right" for="uid">
+						赠送用户：
+					</label>
+					<div class="col-md-8">
+						<input type="text" name="uid" id="uid" value="" placeholder="赠送用户的UID" class="form-control">
+						<div class="figure-caption mt-1">
+							请输入赠送用户的UID，赠送用户的UID不存在将不会赠送成功。
+						</div>
+					</div>
+				</div>
+				
+				<div class="form-group row mb-3">
+					<label class="col-md-2 pr-0 form-control-label text-md-right" for="num">
+						赠送流量：
+					</label>
+					<div class="col-md-8">
+						<input type="text" name="num" id="num" value="1" placeholder="需要赠送的流量" class="form-control">
+						<div class="figure-caption mt-1">
+							单位：G。请填写要赠送的整数流量。
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group row mb-3">
+					<label class="col-md-2 form-control-label"></label>
+					<div class="col-md-2">
+						<button type="submit" class="btn btn-primary btn-block mr-2 mb-2" id="submit">赠送</button>
+					</div>
+					<div class="col-md-2">
+						<a role="button" class="btn btn-secondary btn-block mb-2" href="javascript:history.back();"><?php echo lang('back'); ?></a>
+					</div>
+				</div>
+			</form>
+			
+		</div>
+		
+	</slot>
+	
+</template>
+
+<script>
+$('a[data-active="pt-shop"]').addClass('active');
+</script>

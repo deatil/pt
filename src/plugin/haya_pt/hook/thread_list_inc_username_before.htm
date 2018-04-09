@@ -1,0 +1,18 @@
+<?php 
+if (isset($haya_pt_files_htm[$_thread['tid']]) && !empty($haya_pt_files_htm[$_thread['tid']])) { 
+	$haya_pt_file =  $haya_pt_files_htm[$_thread['tid']];
+?>
+
+<span class='d-none d-md-inline haya-pt-thread-torrent mr-2 text-grey'>
+	[ 
+		<span class='text-danger'>种子：<?php echo $haya_pt_file['seeds']; ?></span>
+		&nbsp;|&nbsp;
+		<span class='text-info'>活动：<?php echo $haya_pt_file['leechers']; ?></span>
+		&nbsp;|&nbsp;
+		<span class='text-success'>完成：<?php echo $haya_pt_file['finished']; ?></span> 
+	]
+</span>
+
+<?php 
+} 
+?>

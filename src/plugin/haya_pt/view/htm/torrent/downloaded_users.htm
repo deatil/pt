@@ -1,0 +1,29 @@
+<?php include _include(APP_PATH.'view/htm/header.inc.htm');?>
+
+<div class="card">
+	<div class="card-header">下载历史</div>
+	<div class="card-body ajax-body">
+		<form action="" method="post" id="haya_pt_download_users">
+			
+			<div class="form-group row">
+				<div class="col-12">
+					<div class="py-2">
+						<?php if (empty($haya_pt_history_users)) {  ?>
+							<span class='text-danger'>你是第一个下载此资源的喔！</span>
+						<?php } else { ?>
+							<?php foreach ($haya_pt_history_users as $_v => $_haya_pt_history_user) { ?>
+								<a href='<?php echo url('user-'.$_haya_pt_history_user['uid']); ?>' target='_blank' class='mr-2' title='<?php echo $_haya_pt_history_user['user']['username']; ?>'>
+									<img class='avatar-2' src='<?php echo $_haya_pt_history_user['user']['avatar_url']; ?>' alt='<?php echo $_haya_pt_history_user['user']['username']; ?>'>
+									<?php echo $_haya_pt_history_user['user']['username']; ?>
+								</a>
+							<?php } ?>
+						<?php } ?>
+					</div>				
+				</div>				
+			</div>
+			
+		</form>
+	</div>
+</div>
+
+<?php include _include(APP_PATH.'view/htm/footer.inc.htm');?>

@@ -1,0 +1,56 @@
+<?php 
+
+if (!empty($threadlist)) {
+	$haya_pt_tids = array();
+	$haya_pt_arr = array();
+	$haya_pt_j = 0;
+	foreach($threadlist as $_haya_pt_thread){
+		$haya_pt_arr[$haya_pt_j]['tid'] = $_haya_pt_thread['tid'];
+		$haya_pt_tids[] = $_haya_pt_thread['tid'];
+		$haya_pt_j ++;
+	}
+	
+	$haya_pt_files_where = array('tid' => $haya_pt_tids);
+	$haya_pt_files_count = haya_pt_files__count($haya_pt_files_where);
+	$haya_pt_files = haya_pt_files__find($haya_pt_files_where, array('tid' => 1), 0, $haya_pt_files_count);
+	
+	$haya_pt_config_file = haya_pt_plugin_dir().'config/config.php';
+	include($haya_pt_config_file);
+	
+	if (!empty($haya_pt_files)) {
+	
+		foreach ($haya_pt_files as $row) {
+			for ($i = 0; $i < count($haya_pt_arr); $i++){
+				if($row['tid'] == $haya_pt_arr[$i]['tid']){
+					$haya_pt_arr[$i]['seeds'] = $row['seeds'];
+					$haya_pt_arr[$i]['leechers'] = $row['leechers'];
+					$haya_pt_arr[$i]['finished'] = $row['finished'];
+					
+					if (!isset($row['type']) 
+						|| !in_array($row['type'], array(1, 2, 3, 4, 5))
+					) {
+						$haya_pt_type = 5;
+					} else {
+						$haya_pt_type = $row['type'];
+					}
+					
+					$haya_pt_arr[$i]['download_type'] = 'type'.$haya_pt_type;
+					break;
+				}
+			}
+		}
+	}
+	
+	$haya_pt_files_htm = array();
+	if (!empty($haya_pt_arr)) {
+		foreach ($haya_pt_arr as $row) {
+			if (!empty($row) && isset($row['seeds'])) {
+				$haya_pt_files_htm[$row['tid']] = $row;
+			} else {
+				$haya_pt_files_htm[$row['tid']] = "";
+			}
+		}	
+	}
+}
+
+?>

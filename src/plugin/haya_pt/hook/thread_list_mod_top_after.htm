@@ -1,0 +1,3 @@
+<?php  if ($route == 'index' || $route == 'forum' || ($route == 'thread' && !empty($haya_pt_torrent))) { ?>
+<button type="button" class="btn btn-secondary haya-pt-weight" data-modal-url="<?php echo url("pt-weight");?>" data-modal-title="更改下载权值" data-modal-arg=".threadlist" data-modal-size="md">权值</button>
+<?php } ?>

@@ -1,0 +1,229 @@
+<?php include _include(ADMIN_PATH.'view/htm/header.inc.htm'); ?>
+
+<?php include _include($haya_pt_admin_view.'tab.htm'); ?>
+
+<div class="mt-3">
+	<div class="row">
+		
+		<div class="col-md-12 mb-2">
+
+			<div class="card">
+				<div class="card-body">
+
+					<h4 class="card-title">
+						种子详情
+					</h4>
+					
+					<hr class="mx-0 my-3 mb-4" />
+			
+					<div class="form-group row mb-2">
+						<label class="col-md-2 pr-0 form-control-label text-md-right font-weight-bold">
+							ID：
+						</label>
+						<div class="col-md-10">
+							<?php echo intval($haya_pt_torrent['fid']); ?>
+						</div>
+					</div>
+			
+					<div class="form-group row mb-2">
+						<label class="col-md-2 pr-0 form-control-label text-md-right font-weight-bold">
+							HASH：
+						</label>
+						<div class="col-md-10">
+							<?php echo trim($haya_pt_torrent['info_hash']); ?>
+						</div>
+					</div>
+			
+					<div class="form-group row mb-2">
+						<label class="col-md-2 pr-0 form-control-label text-md-right font-weight-bold">
+							名称：
+						</label>
+						<div class="col-md-10">
+							<?php echo trim($haya_pt_torrent['filename']); ?>
+						</div>
+					</div>
+
+					<div class="form-group row mb-2">
+						<label class="col-md-2 pr-0 form-control-label text-md-right font-weight-bold">
+							所属主题：
+						</label>
+						<div class="col-md-10">
+							<?php if (!empty($haya_pt_thread)) { ?>
+								<a href="<?php echo url("../forum-$haya_pt_thread[fid]");?>" target="_blank" title="<?php echo $haya_pt_thread['forumname'];?>" class="text-grey">[<?php echo $haya_pt_thread['forumname'];?>]</a>
+								
+								<a href="<?php echo url('../thread-'.$haya_pt_thread['tid']); ?>" target="_blank" class="haya-pt-file-thread">
+									<?php echo trim($haya_pt_thread['subject']); ?>
+								</a>
+								<span class="text-grey">
+									(发布于 <?php echo date('Y-m-d H:i:s', $haya_pt_thread['create_date']); ?>)
+								</span>
+							<?php } else { ?>
+								<span class="text-danger">
+									主题已被删除
+								</span>
+							<?php } ?>
+						</div>
+					</div>
+					
+					<div class="form-group row mb-2">
+						<label class="col-md-2 pr-0 form-control-label text-md-right font-weight-bold">
+							信息：
+						</label>
+						<div class="col-md-10">
+							<div>
+								<a href="http://www.utorrent.com/" target="_blank"><img class="avatar-1" title="请使用utorrent打开种子文件" src="../<?php echo haya_pt_plugin_view_url('img/torrent.gif'); ?>" align="absmiddle"></a>
+								<a style="font-weight: bold;color:#09C" title="<?php echo $haya_pt_torrent['filename']; ?>" href="<?php echo url('../pt-download', array('tid' => $tid)); ?>">
+									<?php echo $haya_pt_filename; ?>
+								</a>(<?php echo $haya_pt_filesize; ?>)(<a 
+									href="javascript:;" 
+									style="color:#09C"
+									data-modal-url="<?php echo url('pt-torrent-'.$tid); ?>"
+									data-modal-title="种子详情"
+									data-modal-arg="<?php echo $tid; ?>"
+								>查看种子详情</a>) 
+								&nbsp;
+								<a href="<?php echo url('pt-history-'.$tid); ?>" class="text-muted" title="如果没有种子，可以联系他们哦！">[下载历史]</a>
+							</div>
+						</div>
+					</div>	
+			
+					<div class="form-group row mb-2">
+						<label class="col-md-2 pr-0 form-control-label text-md-right font-weight-bold">
+							大小：
+						</label>
+						<div class="col-md-10 font-weight-bold">
+							<?php echo haya_pt_sizecount($haya_pt_torrent['size']); ?>
+						</div>
+					</div>
+			
+					<div class="form-group row mb-2">
+						<label class="col-md-2 pr-0 form-control-label text-md-right font-weight-bold">
+							状态：
+						</label>
+						<div class="col-md-10">
+							<span class="haya-pt-file-seeds">
+								<span class="text-danger font-weight-bold">
+									<?php echo $haya_pt_torrent['seeds']; ?>
+								</span>
+								种子
+							</span>, 
+							<span class="haya-pt-file-leechers ml-2">
+								<span class="text-info font-weight-bold">
+									<?php echo $haya_pt_torrent['leechers']; ?>
+								</span>
+								下载中
+							</span>,
+							<span class="haya-pt-file-finished ml-2">
+								<span class="text-success font-weight-bold">
+									<?php echo $haya_pt_torrent['finished']; ?>
+								</span>
+								完成
+							</span>
+						</div>
+					</div>
+			
+					<div class="form-group row mb-2">
+						<label class="col-md-2 pr-0 form-control-label text-md-right font-weight-bold">
+							流量：
+						</label>
+						<div class="col-md-10">
+							<?php echo haya_pt_sizecount($haya_pt_torrent['dlbytes']); ?>
+						</div>
+					</div>	
+			
+					<div class="form-group row mb-2">
+						<label class="col-md-2 pr-0 form-control-label text-md-right font-weight-bold">
+							下载数量：
+						</label>
+						<div class="col-md-10">
+							<span class="text-success font-weight-bold">
+								<?php echo intval($haya_pt_torrent['downloads']); ?> 
+							</span>
+							次
+							(<a class="text-green" title="下载种子文件" href="<?php echo url('../pt-download-'.$tid); ?>">
+								<i class="icon-download"></i>
+								下载
+							</a>)
+						</div>
+					</div>
+				
+					<div class="form-group row mb-2">
+						<label class="col-md-2 pr-0 form-control-label text-md-right font-weight-bold">
+							权值：
+						</label>
+						<div class="col-md-10">
+							<span class="haya-pt-file-type">
+								<img title="下载权值（×<?php echo $down_weight[$haya_pt_torrent_type]; ?>）" src="../<?php echo haya_pt_plugin_view_url('img/'.$haya_pt_down_image); ?>" class="avatar-2" alt="下载权值" align="absmiddle"></span>
+								<img title="上传权值（×<?php echo $upload_weight[$haya_pt_torrent_type]; ?>）" src="../<?php echo haya_pt_plugin_view_url('img/'.$haya_pt_up_image); ?>" class="avatar-2" alt="上传权值" align="absmiddle">
+							</span>
+							
+							<span class="text-grey">
+								(<span title="下载权值"><i class="icon-arrow-down"></i><?php echo $down_weight[$haya_pt_torrent_type]; ?></span>, <span title="上传权值"><i class="icon-arrow-up"></i><?php echo $upload_weight[$haya_pt_torrent_type]; ?></span>)
+							</span>
+						</div>
+					</div>
+					
+					<div class="form-group row mb-2">
+						<label class="col-md-2 pr-0 form-control-label text-md-right font-weight-bold">
+							最近活动时间：
+						</label>
+						<div class="col-md-10 text-danger">
+							<?php echo haya_pt_humandate($haya_pt_torrent['lastactive']); ?>
+						</div>
+					</div>
+					
+					<div class="form-group row mb-2">
+						<label class="col-md-2 pr-0 form-control-label text-md-right font-weight-bold">
+							添加时间：
+						</label>
+						<div class="col-md-10">
+							<?php echo date('Y-m-d H:i:s', $haya_pt_torrent['date']); ?>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label class="col-md-2 form-control-label"></label>
+						
+						<div class="col-md-2 mb-2">
+							<a href="javascript:;" data-tid="<?php echo $haya_pt_torrent['tid']; ?>" class="btn btn-danger btn-block mr-2 px-4 js-haya-pt-file-delete">删除</a>
+						</div>
+						
+						<div class="col-md-2 mb-2">
+							<a role="button" class="btn btn-secondary btn-block" href="javascript:history.back();">返回</a>
+						</div>
+					</div>
+				
+				</div>
+			</div>
+		
+		</div>
+		
+	</div>
+</div>
+
+<?php
+include _include(ADMIN_PATH.'view/htm/footer.inc.htm');
+?>
+
+<script>
+$('#nav li.nav-item-pt').addClass('active');
+
+// 删除选中的文件
+$(".js-haya-pt-file-delete").on('click', function(){
+	
+	$.confirm("确认要删除种子文件吗？", function() {
+		var tid = "<?php echo $tid; ?>";
+		$.xpost(xn.url('pt-file_delete'), {tid: tid}, function(code, message) {
+			if (code == 0) {
+				$.alert(message);
+				
+				location.url = "<?php echo url('pt-files'); ?>";
+			} else {		
+				return $.alert(message);
+			}			
+		});
+	});
+	
+	return false;
+});
+</script>

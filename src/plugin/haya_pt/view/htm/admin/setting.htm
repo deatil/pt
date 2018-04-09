@@ -1,0 +1,423 @@
+<?php include _include(ADMIN_PATH.'view/htm/header.inc.htm'); ?>
+
+<?php include _include($haya_pt_admin_view.'tab.htm'); ?>
+
+<div class="row">
+	<div class="col-sm-12">
+		
+		<div class="card">
+			<div class="card-body">
+				<form action="<?php echo url('pt-setting');?>" method="post">
+					<h4 class="card-title mb-3"><?php echo $header['title']; ?></h4>
+					
+					<hr class="mb-4" />
+					
+					<div class="form-group row mb-3">
+						<label class="col-md-2 pr-0 form-control-label text-md-right" for="tracker_url">
+							<b class="text-dark">Tracker地址：</b>
+						</label>
+						<div class="col-md-8">
+							<input type="text" name="tracker_url" id="tracker_url" value="<?php echo isset($config['tracker_url']) ? trim($config['tracker_url']) : ''; ?>" class="form-control">
+							<div class="figure-caption mt-1">
+								设置tracker地址，默认：
+								<span class="text-info"><?php echo haya_pt_get_web_torrent_url(); ?></span>。
+								‘__pid__’ 代表用户的pid。
+							</div>
+						</div>
+					</div>
+						
+					<div class="form-group row mb-3">
+						<label class="col-md-2 pr-0 form-control-label text-md-right" for="help_url">
+							做种教程地址：
+						</label>
+						<div class="col-md-8">
+							<input type="text" name="help_url" id="help_url" value="<?php echo isset($config['help_url']) ? trim($config['help_url']) : ''; ?>" class="form-control">
+							<div class="figure-caption mt-1">
+								设置做种教程地址。
+							</div>
+						</div>
+					</div>						
+						
+					<div class="form-group row mb-3">
+						<label class="col-md-2 pr-0 form-control-label text-md-right" for="website">
+							网站名称：
+						</label>
+						<div class="col-md-8">
+							<input type="text" name="website" id="website" value="<?php echo isset($config['website']) ? trim($config['website']) : ''; ?>" class="form-control">
+							<div class="figure-caption mt-1">
+								设置种子下载后的种子文件要添加的前缀，不设置将不会添加前缀。
+							</div>
+						</div>
+					</div>						
+						
+					<div class="form-group row">
+						<label class="col-md-2 form-control-label text-md-right pr-0" for="connect_ip_type">
+							种子连接类型：
+						</label>
+						<div class="col-md-8">
+							<div class="open-thread" id="connect_ip_type">
+								<label class="custom-input custom-radio mr-3">
+									<input type="radio" name="connect_ip_type" value="ipv4" <?php if (isset($config['connect_ip_type']) && $config['connect_ip_type'] == 'ipv4') { ?>checked="checked"<?php } ?>> ipv4
+								</label>
+								<label class="custom-input custom-radio mr-3">
+									<input type="radio" name="connect_ip_type" value="ipv6" <?php if (isset($config['connect_ip_type']) && $config['connect_ip_type'] == 'ipv6') { ?>checked="checked"<?php } ?>> ipv6
+								</label>
+								<label class="custom-input custom-radio mr-3">
+									<input type="radio" name="connect_ip_type" value="all" <?php if (!isset($config['connect_ip_type']) || $config['connect_ip_type'] == 'all') { ?>checked="checked"<?php } ?>> ipv4/ipv6
+								</label>
+							</div>		
+							
+							<div class="figure-caption mt-2">
+								选择种子以哪种隧道连接方式下载与上传。默认全部类型。
+							</div>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label class="col-md-2 form-control-label text-md-right pr-0" for="open_upload_forum">
+							<b class="text-dark">板块上传资源：</b>
+						</label>
+						<div class="col-md-8">
+							<div class="open-thread" id="open_upload_forum">
+								<?php if (isset($config['open_upload_forum']) && $config['open_upload_forum'] == 1) { ?>
+									<label class="custom-input custom-radio mr-3">
+										<input type="radio" name="open_upload_forum" value="1" checked="checked"> <?php echo lang('enable'); ?>
+									</label>
+									<label class="custom-input custom-radio mr-3">
+										<input type="radio" name="open_upload_forum" value="0"> <?php echo lang('disable'); ?>
+									</label>
+								<?php } else { ?>
+									<label class="custom-input custom-radio mr-3">
+										<input type="radio" name="open_upload_forum" value="1"> <?php echo lang('enable'); ?>
+									</label>
+									<label class="custom-input custom-radio mr-3">
+										<input type="radio" name="open_upload_forum" value="0" checked="checked"> <?php echo lang('disable'); ?>
+									</label>
+								<?php } ?>
+							</div>		
+							
+							<div class="figure-caption mt-2">
+								是否开启板块上传资源。默认已禁用。
+							</div>
+						</div>
+					</div>
+					
+					<div class="form-group row mb-2">
+						<label class="col-md-2 form-control-label text-md-right pr-0" for="upload_forum">
+							添加资源板块：
+						</label>
+						<div class="col-md-8">
+							<div class="card">
+								<div class="container">
+									<div class="row has-success pt-2">
+										<?php foreach($forumlist as $_fid => $_forum) { ?>									
+											<div class="col-6 col-md-4 col-lg-3">
+												<label class="form-control-label">
+													<?php if (in_array($_fid, $upload_forum)) { ?>
+														<input type="checkbox" class="checkbox" checked="checked" name="upload_forum[]" value="<?php echo $_fid; ?>" />
+													<?php } else { ?>
+														<input type="checkbox" class="checkbox" name="upload_forum[]" value="<?php echo $_fid; ?>" />
+													<?php } ?>
+													<?php echo $_forum['name']; ?>
+												</label>
+											</div>
+										<?php } ?>
+									</div>								
+								</div>								
+							</div>								
+							<div class="mb-2 mt-2 text-grey small">
+								选择需要添加资源的板块，启用 “<span class="text-info">板块上传资源</span>” 后有效。
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group row mb-3 mt-4">
+						<label class="col-md-2 form-control-label text-md-right pr-0" for="upload_forum_tip">
+							不能添加资源提示：
+						</label>
+						<div class="col-md-8">
+							<textarea class="form-control" placeholder="提示" name="upload_forum_tip" id="upload_forum_tip" rows="5"><?php echo isset($config['upload_forum_tip']) ? trim($config['upload_forum_tip']) : ''; ?></textarea>
+							
+							<div class="figure-caption mt-2">
+								板块不能添加资源提示的提示信息。
+							</div>
+						</div>
+					</div>	
+					
+					<div class="form-group row">
+						<label class="col-md-2 form-control-label text-md-right pr-0" for="open_user_upload_group">
+							<b class="text-dark">用户组上传资源：</b>
+						</label>
+						<div class="col-md-8">
+							<div class="open-group-download" id="open_user_upload_group">
+								<?php if (isset($config['open_user_upload_group']) && $config['open_user_upload_group'] == 1) { ?>
+									<label class="custom-input custom-radio mr-3">
+										<input type="radio" name="open_user_upload_group" value="1" checked="checked"> <?php echo lang('enable'); ?>
+									</label>
+									<label class="custom-input custom-radio mr-3">
+										<input type="radio" name="open_user_upload_group" value="0"> <?php echo lang('disable'); ?>
+									</label>
+								<?php } else { ?>
+									<label class="custom-input custom-radio mr-3">
+										<input type="radio" name="open_user_upload_group" value="1"> <?php echo lang('enable'); ?>
+									</label>
+									<label class="custom-input custom-radio mr-3">
+										<input type="radio" name="open_user_upload_group" value="0" checked="checked"> <?php echo lang('disable'); ?>
+									</label>
+								<?php } ?>
+							</div>		
+							
+							<div class="figure-caption mt-2">
+								是否开启用户组上传资源，没有在所选用户组的用户将不能够上传资源。
+							</div>
+						</div>
+					</div>	
+					
+					<div class="form-group row mb-3 mt-4">
+						<label class="col-md-2 form-control-label text-md-right pr-0" for="user_upload_group">
+							上传资源用户组：
+						</label>
+						<div class="col-md-8">
+							<div class="card">
+								<div class="container">
+									<div class="row has-success pt-2">
+										<?php foreach($grouplist as $_gid => $_group) { ?>									
+											<div class="col-6 col-md-4 col-lg-3">
+												<label class="form-control-label">
+													<?php if (in_array($_gid, $user_upload_group)) { ?>
+														<input type="checkbox" class="checkbox" checked="checked" name="user_upload_group[]" value="<?php echo $_gid; ?>" />
+													<?php } else { ?>
+														<input type="checkbox" class="checkbox" name="user_upload_group[]" value="<?php echo $_gid; ?>" />
+													<?php } ?>
+													<?php echo $_group['name']; ?>
+												</label>
+											</div>
+										<?php } ?>
+									</div>								
+								</div>								
+							</div>								
+							<div class="figure-caption mt-2">
+								上传资源所需用户组，启用 “<span class="text-info">用户组上传资源</span>” 有效。
+							</div>
+						</div>
+					</div>
+					
+					<div class="form-group row mb-3 mt-4">
+						<label class="col-md-2 form-control-label text-md-right pr-0" for="user_upload_group_tip">
+							不在用户组提示：
+						</label>
+						<div class="col-md-8">
+							<textarea class="form-control" placeholder="提示" name="user_upload_group_tip" id="user_upload_group_tip" rows="5"><?php echo isset($config['user_upload_group_tip']) ? trim($config['user_upload_group_tip']) : ''; ?></textarea>
+							
+							<div class="figure-caption mt-2">
+								用户不在所选用户组时的提示信息。{user_group}为用户的用户组，{upload_group}为能够上传资源的用户组。
+							</div>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label class="col-md-2 form-control-label text-md-right pr-0" for="open_user_download_group">
+							<b class="text-dark">用户组下载资源：</b>
+						</label>
+						<div class="col-md-8">
+							<div class="open-group-download" id="open_user_download_group">
+								<?php if (isset($config['open_user_download_group']) && $config['open_user_download_group'] == 1) { ?>
+									<label class="custom-input custom-radio mr-3">
+										<input type="radio" name="open_user_download_group" value="1" checked="checked"> <?php echo lang('enable'); ?>
+									</label>
+									<label class="custom-input custom-radio mr-3">
+										<input type="radio" name="open_user_download_group" value="0"> <?php echo lang('disable'); ?>
+									</label>
+								<?php } else { ?>
+									<label class="custom-input custom-radio mr-3">
+										<input type="radio" name="open_user_download_group" value="1"> <?php echo lang('enable'); ?>
+									</label>
+									<label class="custom-input custom-radio mr-3">
+										<input type="radio" name="open_user_download_group" value="0" checked="checked"> <?php echo lang('disable'); ?>
+									</label>
+								<?php } ?>
+							</div>		
+							
+							<div class="figure-caption mt-2">
+								是否开启用户组下载资源，没有在所选用户组的用户将不能够下载资源。
+							</div>
+						</div>
+					</div>	
+					
+					<div class="form-group row mb-3 mt-4">
+						<label class="col-md-2 form-control-label text-md-right pr-0" for="user_download_group">
+							下载资源用户组：
+						</label>
+						<div class="col-md-8">
+							<div class="card">
+								<div class="container">
+									<div class="row has-success pt-2">
+										<?php foreach($grouplist as $_gid => $_group) { ?>									
+											<div class="col-6 col-md-4 col-lg-3">
+												<label class="form-control-label">
+													<?php if (in_array($_gid, $user_download_group)) { ?>
+														<input type="checkbox" class="checkbox" checked="checked" name="user_download_group[]" value="<?php echo $_gid; ?>" />
+													<?php } else { ?>
+														<input type="checkbox" class="checkbox" name="user_download_group[]" value="<?php echo $_gid; ?>" />
+													<?php } ?>
+													<?php echo $_group['name']; ?>
+												</label>
+											</div>
+										<?php } ?>
+									</div>								
+								</div>								
+							</div>								
+							<div class="figure-caption mt-2">
+								下载资源所需用户组，启用 “<span class="text-info">用户组下载资源</span>” 有效。
+							</div>
+						</div>
+					</div>
+					
+					<div class="form-group row mb-3 mt-4">
+						<label class="col-md-2 form-control-label text-md-right pr-0" for="user_download_group_tip">
+							不在用户组提示：
+						</label>
+						<div class="col-md-8">
+							<textarea class="form-control" placeholder="提示" name="user_download_group_tip" id="user_download_group_tip" rows="5"><?php echo isset($config['user_download_group_tip']) ? trim($config['user_download_group_tip']) : ''; ?></textarea>
+							
+							<div class="figure-caption mt-2">
+								用户不在所选用户组时的提示信息。{user_group}为用户的用户组，{upload_group}为能够上传资源的用户组。
+							</div>
+						</div>
+					</div>
+					
+					<div class="form-group row">
+						<label class="col-md-2 form-control-label text-md-right pr-0" for="open_user_exchange_flux_group">
+							<b class="text-dark">兑换流量：</b>
+						</label>
+						<div class="col-md-8">
+							<div class="open-group-download" id="open_user_exchange_flux_group">
+								<?php if (isset($config['open_user_exchange_flux_group']) && $config['open_user_exchange_flux_group'] == 1) { ?>
+									<label class="custom-input custom-radio mr-3">
+										<input type="radio" name="open_user_exchange_flux_group" value="1" checked="checked"> <?php echo lang('enable'); ?>
+									</label>
+									<label class="custom-input custom-radio mr-3">
+										<input type="radio" name="open_user_exchange_flux_group" value="0"> <?php echo lang('disable'); ?>
+									</label>
+								<?php } else { ?>
+									<label class="custom-input custom-radio mr-3">
+										<input type="radio" name="open_user_exchange_flux_group" value="1"> <?php echo lang('enable'); ?>
+									</label>
+									<label class="custom-input custom-radio mr-3">
+										<input type="radio" name="open_user_exchange_flux_group" value="0" checked="checked"> <?php echo lang('disable'); ?>
+									</label>
+								<?php } ?>
+							</div>		
+							
+							<div class="figure-caption mt-2">
+								是否开启用户组兑换流量，没有在所选用户组的用户将不能够兑换流量。
+							</div>
+						</div>
+					</div>	
+					
+					<div class="form-group row mb-3 mt-4">
+						<label class="col-md-2 form-control-label text-md-right pr-0" for="user_exchange_flux_group">
+							兑换流量用户组：
+						</label>
+						<div class="col-md-8">
+							<div class="card">
+								<div class="container">
+									<div class="row has-success pt-2">
+										<?php foreach($grouplist as $_gid => $_group) { ?>									
+											<div class="col-6 col-md-4 col-lg-3">
+												<label class="form-control-label">
+													<?php if (in_array($_gid, $user_exchange_flux_group)) { ?>
+														<input type="checkbox" class="checkbox" checked="checked" name="user_exchange_flux_group[]" value="<?php echo $_gid; ?>" />
+													<?php } else { ?>
+														<input type="checkbox" class="checkbox" name="user_exchange_flux_group[]" value="<?php echo $_gid; ?>" />
+													<?php } ?>
+													<?php echo $_group['name']; ?>
+												</label>
+											</div>
+										<?php } ?>
+									</div>								
+								</div>								
+							</div>								
+							<div class="figure-caption mt-2">
+								兑换流量所需用户组，启用 “<span class="text-info">用户兑换</span>” 后有效。
+							</div>
+						</div>
+					</div>
+					
+					<div class="form-group row mb-3 mt-4">
+						<label class="col-md-2 form-control-label text-md-right pr-0" for="user_exchange_flux_group_tip">
+							不在用户组提示：
+						</label>
+						<div class="col-md-8">
+							<textarea class="form-control" placeholder="提示" name="user_exchange_flux_group_tip" id="user_exchange_flux_group_tip" rows="5"><?php echo isset($config['user_exchange_flux_group_tip']) ? trim($config['user_exchange_flux_group_tip']) : ''; ?></textarea>
+							
+							<div class="figure-caption mt-2">
+								用户不在所选用户组时的提示信息。{user_group}为用户的用户组，{exchange_group}为能够兑换流量的用户组。
+							</div>
+						</div>
+					</div>
+						
+					<div class="form-group row mb-3">
+						<label class="col-md-2 pr-0 form-control-label text-md-right" for="exchange_flux_money">
+							积分兑换：
+						</label>
+						<div class="col-md-8">
+							<input type="text" name="exchange_flux_money" id="exchange_flux_money" value="<?php echo isset($config['exchange_flux_money']) ? trim($config['exchange_flux_money']) : ''; ?>" class="form-control">
+							<div class="figure-caption mt-1">
+								设置多少积分可以兑换一个G的流量。
+							</div>
+						</div>
+					</div>						
+					
+					<div class="form-group row">
+						<label class="col-md-2 form-control-label text-md-right pr-0" for="open_user_gift_flux">
+							<b class="text-dark">赠送流量：</b>
+						</label>
+						<div class="col-md-8">
+							<div class="open-thread" id="open_user_gift_flux">
+								<?php if (isset($config['open_user_gift_flux']) && $config['open_user_gift_flux'] == 1) { ?>
+									<label class="custom-input custom-radio mr-3">
+										<input type="radio" name="open_user_gift_flux" value="1" checked="checked"> <?php echo lang('enable'); ?>
+									</label>
+									<label class="custom-input custom-radio mr-3">
+										<input type="radio" name="open_user_gift_flux" value="0"> <?php echo lang('disable'); ?>
+									</label>
+								<?php } else { ?>
+									<label class="custom-input custom-radio mr-3">
+										<input type="radio" name="open_user_gift_flux" value="1"> <?php echo lang('enable'); ?>
+									</label>
+									<label class="custom-input custom-radio mr-3">
+										<input type="radio" name="open_user_gift_flux" value="0" checked="checked"> <?php echo lang('disable'); ?>
+									</label>
+								<?php } ?>
+							</div>		
+							
+							<div class="figure-caption mt-2">
+								是否开启用户间相互赠送流量，默认已禁用。
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group row mb-3">
+						<label class="col-md-2 form-control-label"></label>
+						<div class="col-md-2">
+							<button type="submit" class="btn btn-primary btn-block mr-2 mb-2" id="submit"><?php echo lang('save'); ?></button>
+						</div>
+						<div class="col-md-2">
+							<a role="button" class="btn btn-secondary btn-block mb-2" href="javascript:history.back();"><?php echo lang('back'); ?></a>
+						</div>
+					</div>
+					
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<?php
+include _include(ADMIN_PATH.'view/htm/footer.inc.htm');
+?>
+
+<script>
+$('#nav li.nav-item-pt').addClass('active');
+</script>

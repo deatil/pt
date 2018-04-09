@@ -1,0 +1,54 @@
+<template include="./plugin/haya_pt/view/htm/template/haya_pt_user.template.htm">
+	
+	<slot name="my_body">
+		
+		<div class="haya-pt-resettracker">
+				
+			<?php if (!empty($is_ban)) { ?>
+				<div class="form-group row haya-pt-shop-error">
+					<div class="col-12">
+						<div class="alert alert-danger alert-custom alert-dismissible mb-0">
+							<i class="icon icon-times-circle mr-2"></i>
+							<span class="haya-pt-shop-error-warning font-weight-bold">注意！</span>
+							<span class="haya-pt-shop-error-tip">你的上传/下载权限已被BAN，如果想继续使用你的账号，请联系管理员。</span>
+						</div>
+					</div>
+				</div>
+			<?php } ?>
+	
+			<div class="haya-pt-user-tracker mb-2">
+				<div class="mb-1" style="font-weight:bold;font-size:12px">您当前的tracker地址为:</div>
+				<div style="color:#F00;font-size:14px"><?php echo $tracker; ?></div>
+			</div>
+			
+			<div class="haya-pt-tracker-help mb-3">
+				<span style="font-size:12px" class="text-muted">友情提醒：您仅需要在tracker地址泄露的情况下更新，更新后请将utorrent软件中所有任务的tracker地址都更新。不明白？<a href="<?php echo $haya_pt_config['help_url']; ?>" target="_blank" style="color:#00F;">这里有教程</a><span><br/>
+			</div>
+		
+			<a href="javascript:;" class="btn btn-primary js-haya-pt-resettracker-btn">点此重置</a>
+		</div>
+		
+	</slot>
+	
+</template>
+
+<script>
+$('a[data-active="pt-resettracker"]').addClass('active');
+
+$(document).on("click", ".js-haya-pt-resettracker-btn", function() {
+	$.confirm('重置Tracker', function() {
+		var url = '<?php echo url("pt-resettracker");?>';
+		
+		$.xpost(url, {'changepid': 1}, function(code, msg){
+			$.alert(msg);	
+			
+			if (code == 0) {
+				setTimeout(function() {
+					location.reload();
+				}, 1500);
+			}
+		});
+		
+	}, {'body': "确认要重置？"});		
+});
+</script>
