@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * plugin-pt
+ *
+ * PT服务端
+ * 
+ * @author deatil
+ * @create 2018-4-5
+ */
+
 //上传权重
 $upload_weight['type1'] = 2;
 $upload_weight['type2'] = 1.8;

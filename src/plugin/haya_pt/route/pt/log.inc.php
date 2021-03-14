@@ -1,8 +1,17 @@
 <?php
 
+/**
+ * plugin-pt
+ *
+ * PT服务端
+ * 
+ * @author deatil
+ * @create 2018-4-5
+ */
+ 
 defined('DEBUG') OR exit('Forbidden');
 
-$header['title'] = '兑换记录 - PT';
+$header['title'] = '记录 - PT';
 
 $user = user_read($uid);
 user_login_check();

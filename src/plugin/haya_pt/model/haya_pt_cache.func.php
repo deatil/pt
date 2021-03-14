@@ -1,30 +1,35 @@
 <?php
 
-// 插件自定义缓存
-$g_haya_pt_cache = FALSE;
+/**
+ * plugin-pt
+ * 
+ * @author deatil
+ * @create 2018-4-5
+ */
+
+/**
+ * 获取缓存
+ */
 function haya_pt_cache_get($k) {
-	global $g_haya_pt_cache;
-	$g_haya_pt_cache === FALSE AND $g_haya_pt_cache = cache_get('haya_pt');
-	empty($g_haya_pt_cache) AND $g_haya_pt_cache = array();
-	return array_value($g_haya_pt_cache, $k, NULL);
+    // 16位md5值
+    $key = md5($k, true);
+    return cache_get($key);
 }
 
+/**
+ * 设置缓存
+ */
 function haya_pt_cache_set($k, $v) {
-	global $g_haya_pt_cache;
-	$g_haya_pt_cache === FALSE AND $g_haya_pt_cache = cache_get('haya_pt');
-	empty($g_haya_pt_cache) AND $g_haya_pt_cache = array();
-	$g_haya_pt_cache[$k] = $v;
-	return cache_set('haya_pt', $g_haya_pt_cache);
+    $key = md5($k, true);
+    return cache_set($key, $v);
 }
 
+/**
+ * 删除缓存
+ */
 function haya_pt_cache_delete($k) {
-	global $g_haya_pt_cache;
-	$g_haya_pt_cache === FALSE AND $g_haya_pt_cache = cache_get('haya_pt');
-	empty($g_haya_pt_cache) AND $g_haya_pt_cache = array();
-	if(isset($g_haya_pt_cache[$k])) unset($g_haya_pt_cache[$k]);
-	cache_set('haya_pt', $g_haya_pt_cache);
-	return TRUE;
+    $key = md5($k, true);
+    return cache_delete($key);
 }
-
 
 ?>

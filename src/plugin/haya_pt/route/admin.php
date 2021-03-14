@@ -32,6 +32,9 @@ $actions = array(
 	'banlist',
 	
 	'log',
+	'log_delete',
+	
+	'flux',
 );
 
 if (!in_array($action, $actions)) {

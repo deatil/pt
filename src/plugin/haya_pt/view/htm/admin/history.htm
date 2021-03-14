@@ -5,7 +5,7 @@
 <div class="card">
 	<div class="card-header">
 		<span>
-			<a href="<?php echo url('pt-file-'.$tid); ?>" class="haya-pt-file-title text-info" title="<?php echo $haya_pt_thread['subject']; ?>">
+			<a href="<?php echo url('pt-file-'.$tid); ?>" class="haya-pt-history-title text-info" title="<?php echo $haya_pt_thread['subject']; ?>">
 				<?php echo haya_pt_substr($haya_pt_thread['subject'], 20); ?>
 			</a>
 			的下载历史
@@ -38,7 +38,7 @@
 										</tr>
 									</thead>
 									
-									<tbody id="haya_pt_file_list" class="haya-pt-file-list">
+									<tbody id="haya_pt_history_list" class="haya-pt-history-list">
 										<?php foreach($historys as & $_history){ ?>
 											<tr>
 												<td>

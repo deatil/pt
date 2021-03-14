@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * plugin-pt
+ *
+ * PT服务端
+ * 
+ * @author deatil
+ * @create 2018-4-5
+ */
 defined('DEBUG') OR exit('Forbidden');
 
 $header['title'] = '重置Tracker - PT';
@@ -19,7 +27,9 @@ if ($method == 'GET') {
 		$pid = md5(uniqid(rand(), true));
 
 		haya_pt_users__update($uid, array(
-			'pid' => $pid
+			'pid' => $pid,
+			'last_active' => time(),
+			'last_ip' => GLOBALS('longip'),
 		));
 	}
 	

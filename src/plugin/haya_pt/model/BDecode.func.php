@@ -33,6 +33,15 @@ Known bugs:
   suppressing errors.
 */
 
+/**
+ * plugin-pt
+ *
+ * PT服务端
+ * 
+ * @author deatil
+ * @create 2018-4-5
+ */
+
 // Protect our namespace using a class
 class BDecode {
 	function numberdecode($wholefile, $offset) {

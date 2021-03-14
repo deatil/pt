@@ -1,0 +1,67 @@
+<?php include _include(ADMIN_PATH.'view/htm/header.inc.htm'); ?>
+
+<?php include _include($haya_pt_admin_view.'tab.htm'); ?>
+
+<div class="row">
+	<div class="col-sm-12">
+		
+		<div class="card">
+			<div class="card-body">
+				<form action="<?php echo url('pt-flux-'.$_uid);?>" method="post">
+					<h4 class="card-title mb-3">赠送流量</h4>
+					
+					<hr class="mb-4" />
+					
+					<div class="form-group row mb-3">
+						<label class="col-md-2 pr-0 form-control-label text-md-right">
+							<b class="text-dark">用户：</b>
+						</label>
+						<div class="col-md-8">
+							<?php echo $_user['username']; ?>
+						</div>
+					</div>
+					
+					<div class="form-group row mb-3">
+						<label class="col-md-2 pr-0 form-control-label text-md-right">
+							用户流量：
+						</label>
+						<div class="col-md-8">
+							<?php echo haya_pt_sizecount($_pt_user['flux']);?>
+						</div>
+					</div>
+					
+					<div class="form-group row mb-3">
+						<label class="col-md-2 pr-0 form-control-label text-md-right" for="num">
+							赠送流量：
+						</label>
+						<div class="col-md-8">
+							<input type="text" name="num" id="num" value="0" class="form-control">
+							<div class="figure-caption mt-1">
+								填写赠送给用户的流量，负数表示减少流量，单位：G
+							</div>
+						</div>
+					</div>
+				
+					<div class="form-group row mb-3">
+						<label class="col-md-2 form-control-label"></label>
+						<div class="col-md-2">
+							<button type="submit" class="btn btn-primary btn-block mr-2 mb-2" id="submit">提交</button>
+						</div>
+						<div class="col-md-2">
+							<a role="button" class="btn btn-secondary btn-block mb-2" href="javascript:history.back();"><?php echo lang('back'); ?></a>
+						</div>
+					</div>
+					
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<?php
+include _include(ADMIN_PATH.'view/htm/footer.inc.htm');
+?>
+
+<script>
+$('#nav li.nav-item-pt').addClass('active');
+</script>

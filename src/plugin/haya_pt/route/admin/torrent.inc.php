@@ -1,5 +1,14 @@
 <?php 
 
+/**
+ * plugin-pt
+ *
+ * PT服务端
+ * 
+ * @author deatil
+ * @create 2018-4-5
+ */
+ 
 defined('DEBUG') OR exit('Forbidden');
 
 $tid = param(2, 0);

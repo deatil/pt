@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * plugin-pt
+ *
+ * PT服务端
+ * 
+ * @author deatil
+ * @create 2018-4-5
+ */
+ 
 defined('DEBUG') OR exit('Forbidden');
 
 $header['title'] = '赠送流量 - PT';
@@ -74,6 +83,19 @@ if ($method == 'GET') {
 		'money' => $money,
 		'flux' => $flux,
 		'content' => $content,
+		'create_date' => time(),
+		'create_ip' => $longip,
+	));
+	
+	// 收流量方信息
+	$_content = '收到了来自<a href="'.url('user-'.$user['uid']).'" target="_blank"><span class="text-info">'.$user['username'].'</span></a> 的流量 <span class="text-info">'.haya_pt_sizecount($flux).'</span>。';
+	haya_pt_log__create(array(
+		'uid' => $_uid,
+		'action' => 'add',
+		'type' => 'gift',
+		'money' => $money,
+		'flux' => $flux,
+		'content' => $_content,
 		'create_date' => time(),
 		'create_ip' => $longip,
 	));

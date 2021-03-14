@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * plugin-pt
+ *
+ * PT服务端
+ *
+ * 注意：使用该插件前请确保你的mysql用户有创建触发器的权限
+ * 
+ * @author deatil
+ * @create 2018-3-31
+ */
+
 defined('DEBUG') OR exit('Forbidden');
 
 $tablepre = $db->tablepre;
@@ -153,15 +164,14 @@ BEGIN
 		FROM {$tablepre}pt_peers 
 		WHERE status='leecher' 
 			AND infohash=new.infohash
-	),
-	seeds = ( 
+	), seeds = ( 
 		SELECT COUNT(*) 
 		FROM {$tablepre}pt_peers 
 		WHERE status='seeder' 
 			AND infohash=new.infohash
 	) 
-	where info_hash=new.infohash;
-END
+	WHERE info_hash=new.infohash;
+END;
 EOF;
 db_exec($sql);
 
@@ -176,38 +186,14 @@ BEGIN
 		FROM {$tablepre}pt_peers 
 		WHERE status='leecher' 
 			AND infohash=old.infohash
-	),
-	seeds = ( 
+	), seeds = ( 
 		SELECT COUNT(*) 
 		FROM {$tablepre}pt_peers 
 		WHERE status='seeder' 
 			AND infohash=old.infohash
 	) 
 	WHERE info_hash=old.infohash;
-END
-EOF;
-db_exec($sql);
-
-$sql = <<<EOF
-CREATE TRIGGER `after_peers_update` 
-AFTER UPDATE ON `{$tablepre}pt_peers` 
-FOR EACH ROW 
-BEGIN 
-	UPDATE {$tablepre}pt_files 
-	SET leechers = ( 
-		SELECT COUNT(*) 
-		FROM {$tablepre}pt_peers 
-		WHERE status='leecher' 
-			AND infohash=old.infohash
-	),
-	seeds = ( 
-		SELECT COUNT(*) 
-		FROM {$tablepre}pt_peers 
-		WHERE status='seeder' 
-			AND infohash=old.infohash
-	) 
-	WHERE info_hash=old.infohash;
-END
+END;
 EOF;
 db_exec($sql);
 
@@ -216,7 +202,7 @@ $haya_pt_config = array(
 	'tracker_url' => url('pt-announce', array('pid' => '__pid__')), //tracker地址
 	'help_url' => 'help.htm', //做种教程地址，在发帖页面显示，请自行修改
 	'website' => '[PT]', // 网站名称
-	'connect_ip_type' => 'all', // ipv4-ipv4，ipv4-ipv6，all-ipv4/ipv6
+	'connect_ip_type' => 'all', // ipv4-ipv4，ipv6-ipv6，all-ipv4/ipv6
 	
 	'open_upload_forum' => 0,
 	'upload_forum' => '',

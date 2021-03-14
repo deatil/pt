@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * plugin-pt
+ *
+ * PT服务端
+ * 
+ * @author deatil
+ * @create 2018-4-5
+ */
+
 return array(
 	'setting' => array(
 		'url' => url('pt-setting'),

@@ -1,5 +1,14 @@
 <?php
 
+/**
+ * plugin-pt
+ *
+ * PT服务端
+ * 
+ * @author deatil
+ * @create 2018-3-31
+ */
+
 defined('DEBUG') OR exit('Forbidden');
 
 if (!function_exists("sha1")) {

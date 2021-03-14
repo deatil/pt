@@ -1,0 +1,72 @@
+delimiter ||
+CREATE TRIGGER `after_peers_insert` 
+AFTER INSERT ON `bbs_pt_peers` 
+FOR EACH ROW
+BEGIN
+    UPDATE
+        bbs_pt_files
+    SET
+        leechers =(
+        SELECT
+            COUNT(*)
+        FROM
+            bbs_pt_peers
+        WHERE
+			status = 'leecher' AND infohash = NEW.infohash
+    ),
+    seeds =(
+		SELECT
+			COUNT(*)
+		FROM
+			bbs_pt_peers
+		WHERE 
+			status = 'seeder' AND infohash = NEW.infohash
+	) 
+	WHERE
+		info_hash = NEW.infohash;
+end||
+delimiter ;
+
+line:
+
+UPDATE bbs_pt_files SET leechers =(SELECT COUNT(*) FROM bbs_pt_peers WHERE status = 'leecher' AND infohash = NEW.infohash),seeds =(SELECT COUNT(*) FROM bbs_pt_peers WHERE status = 'seeder' AND infohash = NEW.infohash) WHERE info_hash = NEW.infohash;
+
+---------------------------------------
+
+CREATE TRIGGER `after_peers_delete` 
+AFTER DELETE ON `bbs_pt_peers` 
+FOR EACH ROW 
+BEGIN 
+	UPDATE bbs_pt_files 
+	SET leechers = ( 
+		SELECT COUNT(*) 
+		FROM bbs_pt_peers 
+		WHERE status='leecher' 
+			AND infohash=old.infohash
+	),
+	seeds = ( 
+		SELECT COUNT(*) 
+		FROM bbs_pt_peers 
+		WHERE status='seeder' 
+			AND infohash=old.infohash
+	) 
+	WHERE info_hash=old.infohash;
+END;
+
+
+line:
+
+UPDATE bbs_pt_files 
+SET leechers = ( 
+	SELECT COUNT(*) 
+	FROM bbs_pt_peers 
+	WHERE status='leecher' 
+		AND infohash=old.infohash
+),
+seeds = ( 
+	SELECT COUNT(*) 
+	FROM bbs_pt_peers 
+	WHERE status='seeder' 
+		AND infohash=old.infohash
+) 
+WHERE info_hash=old.infohash;
